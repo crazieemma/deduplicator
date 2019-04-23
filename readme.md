@@ -43,7 +43,24 @@ LCS[i][j] = 0. At the end, traverse the matrix and find the maximum element in i
 + **Ability to retrieve all files stored in the locker in any order, at any time.**
     + *The retrieve function basically cal decompress function. The decompress has two constructors and you can call it entering locker as well as file name or enter them externally. The first step of retrieve, is to check wether this file is image or text file. If it is an image file, it will decompress and store the retrieved image string text in locker. Then, decompresser will read three data files to perform decompressing — inference file, index file, and compressed file. For each line of index file, according to these three column data, it read part of compressed file as first part, find certain substring of reference, and read following part of compressed file, combing this three part together to form a new temporary string. Based on this string, we used next line of index file to perform the same operation, until the last line of index file. The whole string will be return as the decompressed file.*
 + **Your locker should be portable**
+    + Locker is stored as a folder in computer and can be transfered easily
 + **Command-line User Interface**
+    + we support add plain text, image and store one directory as one entity
+        +   For adding file to the locker
+        `java dedup -addFile [file] -locker [locker name]`
+            + tips: [file] means the absolute path of the file
+        + For retrieve file from the locker
+        `java dedup -retrieveFile [file] -locker [locker name]`
+        + For delete file from the locker
+        `java  dedup -deleteFile [file] -locker [locker name]`
+        + For search substring from the locker
+        `java dedup -search [string] -locker [locker name]`
+            + tips:  [string] means the substring you want to search, you need to use "" when your substring has space
+        + For display storage
+        `java dedup -display storage -locker [locker name]`
+            + tips: you can only change the [locker name]
+
+
 #### 2) Possible feature
 + **Develop networked access to your locker.**
     + *We use java socket communication to achieve networked access to our locker. After TCP three way handshakes, connection between Server and Client is built. Client could send locker name and file to upload file; could send locker name and file name to retrieve or delete file; also could send string to search if it is in some file in the locker. After doing those functions, Server would send feedback to client (i.e. retrieved file, storage progress…).*
@@ -76,7 +93,8 @@ LCS[i][j] = 0. At the end, traverse the matrix and find the maximum element in i
 + Socket: https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html
 + Frequency Based Chunking for Data De-Duplication https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5581583
 + Data deduplication techniques https://ieeexplore.ieee.org/abstract/document/5656539
-+ awt: https://docs.oracle.com/javase/7/docs/api/java/awt/event/ActionEvent.html
++ Awt: https://docs.oracle.com/javase/7/docs/api/java/awt/event/ActionEvent.html
++ LCS using Dynamic Program: https://en.wikipedia.org/wiki/Longest_common_substring_problem
 
 
 
@@ -100,7 +118,9 @@ LCS[i][j] = 0. At the end, traverse the matrix and find the maximum element in i
     + **MyApplication_v2.zip**
 + Test
     + **unit test** : all the files in the unit_test folder
-    + **System test** : Commandline.txt
+    + **System test** 
+        + Use the commands in the 'Command-line User Interface' to test our code
+        + Use the GUI to test
 
 
 ### **Data:**
