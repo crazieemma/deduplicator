@@ -1,5 +1,5 @@
 # README
-## I. Documentation
+# I. Documentation
 ### **Description**
  Deduplicator Project is seeking to implement efficiently store Data in Lockers. This implementation need Compress when store data and Decompress when retrieve data.
 ### **Group member**
@@ -10,9 +10,20 @@
 + Tianyi Sun(tysun@bu.edu)
 ### **Design decisions**
 + **Algorithm**
-    + MD5
-    + Sunday Algorithm
-    + Long common sunstring using dynamic programming
+    + [MD5](https://en.wikipedia.org/wiki/MD5)
+        + To check if the two strings are same 
+    + [Sunday Algorithm](https://csclub.uwaterloo.ca/~pbarfuss/p132-sunday.pdf)
+        + In the matching process, the pattern string is matched one by one from left to right at first. When a mismatched character is found, the current matching position skips the step size as large as possible, and then the next round of matching is carried out, so as to improve the matching efficiency. When the Sunday algorithm fails to match, it determines whether the next character of the last character in the main string participating in the match appears in the pattern string. If not, the jump step length is the length of the pattern string plus 1; If present, the jump step is the distance from the rightmost end of the pattern string to the end of the character plus 1. 
+        + Assume the compared file has n characters, the amortized time for Sunday Algorithm is **O(n)**.
+    + [Long Common Substring Using Dynamic Programming](https://en.wikipedia.org/wiki/Longest_common_substring_problem)
+        + A longest substring is a sequence that appears in the same order and necessarily contiguous in both the strings.
+        + Create a matrix of size of m*n and store the solutions of substrings to use them later.Using [bottom-up](https://algorithms.tutorialhorizon.com//introduction-to-dynamic-programming-fibonacci-series/#Bottom-Up) manner.
+        + Base Cases: If any of the string is null then LCS will be 0.Check if ith character in one string A is equal to jth character in string B
+            + Case 1: both characters are same
+LCS[i][j] = 1 + LCS[i-1][j-1] (add 1 to the result and remove the last character from both the strings and check the result for the smaller string.)
+            + Case 2: both characters are not same.
+LCS[i][j] = 0. At the end, traverse the matrix and find the maximum element in it, This will the length of Longest Common Substring.
+        + Running time: O(m*n) time
 + **Attention**
     + For the requirments from the project description, We only support ASCII enconding. If you use files which are not content to it, we will convert them into ASCII which would cause some gibberishes in your file.
 + **Explaination of some file**
@@ -20,13 +31,13 @@
     + reference.txt : the reference for laer
     + file.txt : the difference chars from the reference.txt saved in this file
 ### **Features**
-##### 1) Basic feature
+#### 1) Basic feature
 + **Ability to store fifty 10MB ASCII files, using at most 100MB of storage.**
 + **Ability to retrieve all files stored in the locker in any order, at any time.**
     + *The retrieve function basically cal decompress function. The decompress has two constructors and you can call it entering locker as well as file name or enter them externally. The first step of retrieve, is to check wether this file is image or text file. If it is an image file, it will decompress and store the retrieved image string text in locker. Then, decompresser will read three data files to perform decompressing — inference file, index file, and compressed file. For each line of index file, according to these three column data, it read part of compressed file as first part, find certain substring of reference, and read following part of compressed file, combing this three part together to form a new temporary string. Based on this string, we used next line of index file to perform the same operation, until the last line of index file. The whole string will be return as the decompressed file.*
 + **Your locker should be portable**
 + **Command-line User Interface**
-##### 2) Possible feature
+#### 2) Possible feature
 + **Develop networked access to your locker.**
     + *We use java socket communication to achieve networked access to our locker. After TCP three way handshakes, connection between Server and Client is built. Client could send locker name and file to upload file; could send locker name and file name to retrieve or delete file; also could send string to search if it is in some file in the locker. After doing those functions, Server would send feedback to client (i.e. retrieved file, storage progress…).*
 + **Ability to efficiently store similar images.**
@@ -52,17 +63,17 @@
             
    
 ### **Reference and backgroud material**
-#### Referene: 
-+ Sunday Algorithm to find the same substring https://csclub.uwaterloo.ca/~pbarfuss/p132-sunday.pdf
-+ Ukkonen's algorithm https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf
+##### Reference: 
++ Sunday Algorithm to find the same substring:  https://csclub.uwaterloo.ca/~pbarfuss/p132-sunday.pdf
 + Extreme Binning: Scalable, Parallel Deduplication for Chunk-based File Backup https://www.computer.org/csdl/proceedings/mascots/2009/4927/00/05366623.pdf
++ Socket: https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html
 + Frequency Based Chunking for Data De-Duplication https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5581583
 + Data deduplication techniques https://ieeexplore.ieee.org/abstract/document/5656539
-+ 
-#### Backgroud: 
++ awt: https://docs.oracle.com/javase/7/docs/api/java/awt/event/ActionEvent.html
+##### Backgroud: 
 
 
-## II. Code
+# II. Code
 ### **File name:**
 +  CommondLine
     + **Zip.java** : one entity
@@ -75,22 +86,21 @@
 + Network
     + **server.java**
     + **client.java**
-    + **dedupWeb.jar**
 + GUI
     + **GUI.java**
+    + **dedupWeb.jar**
 + Android
     + **MyApplication_v2.zip**
 + Test
-### **How to run:**
-+ **Andriod**
-    + You can clink this [link](https://drive.google.com/file/d/1BlBW8SKQRbEBD_UXhg0IvK8AXby1c7K0/view)
-+ **dedup**
-+ **GUI**
-+ **Network**
-+ **Testing code:**
-    + System test:
-    + Unit tests:
-## III. Work breakdown
+    + **unit test** : all the files in the unit_test folder
+    + **System test** : Commandline.txt
+
+
+### **Data:**
++ **textFiles folder**: including the original files, for test **compressor.java** and **zip.java**
++ **testlocker folder**: including all compressed files, for test **search.java**, **decompressor.java** and **DeleteFile.java**
++ **testImg folder**: including similar images, for test **similarImage.java** and **commondline.txt**
+# III. Work breakdown
 + **Yuying Wang:** 
     + dedup
     + unit test
@@ -117,7 +127,7 @@
     + Decompressor accompany with Yueling Jiang
     + Network access to locker accompany with Yueling Jiang
 
-## IV. Jira links
+# IV. Jira links
 This is our [ Jira Link](https://agile.bu.edu/jira/projects/GROUP11/issues/GROUP11-10?filter=allopenissues).
 
 
