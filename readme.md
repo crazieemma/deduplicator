@@ -33,6 +33,13 @@ LCS[i][j] = 0. At the end, traverse the matrix and find the maximum element in i
 ### **Features**
 #### 1) Basic feature
 + **Ability to store fifty 10MB ASCII files, using at most 100MB of storage.**
+    + divideFactor: depend on the length of file contents
+        + split the whole file to “divideFactor” parts in order to run faster and get more refined deduplication. 
+    + For each part of the text, we are going to do separate dedup operation.
+        + Firstly, use MD5 to compress the text, if results of two files are the same, then store nothing in file2, store the compare index of start and length in common.txt..
+        + If the results are not the same, then use Sunday algorithm to found the max-length-same-substring and return its begin indexes in both files and the length of the substring.  
+        + Because the Sunday Algorithm has some limits, so if we can not get the result from the Sunday, we will use the Dynamic Algorithm to find the long common substring.
+    + In the output, we store a reference file, a deduped file2 and a .txt store all the index of same characters. 
 + **Ability to retrieve all files stored in the locker in any order, at any time.**
     + *The retrieve function basically cal decompress function. The decompress has two constructors and you can call it entering locker as well as file name or enter them externally. The first step of retrieve, is to check wether this file is image or text file. If it is an image file, it will decompress and store the retrieved image string text in locker. Then, decompresser will read three data files to perform decompressing — inference file, index file, and compressed file. For each line of index file, according to these three column data, it read part of compressed file as first part, find certain substring of reference, and read following part of compressed file, combing this three part together to form a new temporary string. Based on this string, we used next line of index file to perform the same operation, until the last line of index file. The whole string will be return as the decompressed file.*
 + **Your locker should be portable**
@@ -63,14 +70,14 @@ LCS[i][j] = 0. At the end, traverse the matrix and find the maximum element in i
             
    
 ### **Reference and backgroud material**
-##### Reference: 
+
 + Sunday Algorithm to find the same substring:  https://csclub.uwaterloo.ca/~pbarfuss/p132-sunday.pdf
 + Extreme Binning: Scalable, Parallel Deduplication for Chunk-based File Backup https://www.computer.org/csdl/proceedings/mascots/2009/4927/00/05366623.pdf
 + Socket: https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html
 + Frequency Based Chunking for Data De-Duplication https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5581583
 + Data deduplication techniques https://ieeexplore.ieee.org/abstract/document/5656539
 + awt: https://docs.oracle.com/javase/7/docs/api/java/awt/event/ActionEvent.html
-##### Backgroud: 
+
 
 
 # II. Code
